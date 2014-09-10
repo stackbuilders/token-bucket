@@ -58,10 +58,12 @@ test-suite token-bucket-test
   hs-source-dirs: spec, src
   main-is: Spec.hs
   build-depends:       base >=4.6 && <4.8
+                     , network >=2.6 && <2.7
+                     , containers >=0.5 && <0.6
                      , attoparsec >=0.11 && <0.12
                      , text >=1.1.1.3 && <1.1.2
-                     , QuickCheck >=2 && <3
                      , scientific >=0.3.1 && <0.4
+                     , resource-pool >=0.2 && <0.3
 
                      , hspec2
 

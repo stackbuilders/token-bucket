@@ -24,5 +24,7 @@ main = do
 
     else
       do
-        hPutStrLn stderr "Server must be started with a port and config file path."
+        hPutStrLn stderr
+          "Server must be started with a port and config file path."
+
         exitWith (ExitFailure 1)

@@ -34,15 +34,7 @@ import qualified Data.Map.Strict as Map
 
 import Network.TokenBucket.Parser (Command(..), commandParser)
 
--- | Returns some computed properties for the bucket.
-bucketWithProperties ::
-  (T.Text, Int) -- ^ Bucket name, desired rate.
-  -> (T.Text, Int, Int) -- ^ Bucket name, refill delay and max size.
-bucketWithProperties (bucket, rate) =
-  ( bucket, computeDelay rate, rate)
-  where computeDelay r = ceiling $ 1000000 / (fromIntegral r :: Double)
-
-
+-- | Start the server instance.
 launch :: PortNumber -> [(T.Text, Int)] -> IO ()
 launch port config = do
   putStrLn $ "\nActivating token bucket server on port " ++ show port
@@ -69,6 +61,15 @@ launch port config = do
   listen sock 2
 
   mainLoop sock tks
+
+
+-- | Returns some computed properties for the bucket.
+bucketWithProperties ::
+  (T.Text, Int) -- ^ Bucket name, desired rate.
+  -> (T.Text, Int, Int) -- ^ Bucket name, refill delay and max size.
+bucketWithProperties (bucket, rate) =
+  ( bucket, computeDelay rate, rate)
+  where computeDelay r = ceiling $ 1000000 / (fromIntegral r :: Double)
 
 -- | Algorithm for topping up a given bucket by adding to the MVar up
 -- to the specified limit.
