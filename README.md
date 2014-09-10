@@ -9,9 +9,11 @@ external integration. One common way to do so is with a
 This application is a TCP server which follows the token bucket
 algorithm. By connecting to this server, clients can easily follow
 rate limiting rules according to a predefined acceptable number of
-queries per second.
+queries per second. A single server instance can be used for multiple
+"buckets."
 
-A single server instance can be used for multiple "buckets."
+This library also includes a Haskell client that uses connection
+pooling to connect to the token bucket server.
 
 # Required Resources
 
@@ -59,6 +61,8 @@ with more cores if this QPS level is needed.
 
 # Usage
 
+## Server Usage
+
 Create a configuration file with each line containing a bucket name a
 space, and then the number of operations per second that is acceptable
 for each bucket. Buckets can be named using any non-space character.
@@ -69,6 +73,19 @@ for each bucket. Buckets can be named using any non-space character.
 Run the server, specifying the port and path to the configuration file:
 
     cabal run 4444 /path/to/config_filename
+
+## Haskell Client Usage
+
+Once a server is started, you can connect to the server and request a
+token as follows (assuming the server is running on localhost port
+4444):
+
+```haskell
+λ: import qualified Network.TokenBucket.Client as C
+λ: pool <- C.connect "localhost" 4444
+λ: C.get pool "bucket_a"
+λ: Right True
+```
 
 # Protocol
 
