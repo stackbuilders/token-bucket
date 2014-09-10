@@ -42,6 +42,7 @@ bucketWithProperties (bucket, rate) =
   ( bucket, computeDelay rate, rate)
   where computeDelay r = ceiling $ 1000000 / (fromIntegral r :: Double)
 
+
 launch :: PortNumber -> [(T.Text, Int)] -> IO ()
 launch port config = do
   putStrLn $ "\nActivating token bucket server on port " ++ show port
@@ -59,7 +60,7 @@ launch port config = do
   print bktWithProperties
   putStrLn "\n"
 
-  _ <- mapM_ (forkIO . refillLoop tks) bktWithProperties
+  mapM_ (forkIO . refillLoop tks) bktWithProperties
 
   sock <- socket AF_INET Stream 0
 
